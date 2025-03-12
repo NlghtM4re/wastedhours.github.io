@@ -1,1 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wasted Hours Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+            background-color: #f4f4f4;
+        }
+        form {
+            margin: 20px;
+        }
+        input, button {
+            padding: 10px;
+            font-size: 16px;
+        }
+        .result {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Wasted Hours Calculator</h1>
+    <form method="post">
+        <label for="hours_wasted">Enter hours wasted:</label>
+        <input type="number" id="hours_wasted" name="hours_wasted" step="0.1" required>
+        <button type="submit">Calculate</button>
+    </form>
+
+    {% if result %}
+        <div class="result">
+            {% if result is string %}
+                <p>{{ result }}</p>
+            {% else %}
+                {% for line in result %}
+                    <p>{{ line }}</p>
+                {% endfor %}
+            {% endif %}
+        </div>
+    {% endif %}
+</body>
+</html>
 
