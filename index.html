@@ -4,45 +4,63 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wasted Hours Calculator</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin: 50px;
-            background-color: #f4f4f4;
-        }
-        form {
-            margin: 20px;
-        }
-        input, button {
-            padding: 10px;
-            font-size: 16px;
-        }
-        .result {
-            margin-top: 20px;
-            font-weight: bold;
-        }
-    </style>
 </head>
 <body>
     <h1>Wasted Hours Calculator</h1>
-    <form method="post">
+    <form id="wasteForm">
         <label for="hours_wasted">Enter hours wasted:</label>
         <input type="number" id="hours_wasted" name="hours_wasted" step="0.1" required>
         <button type="submit">Calculate</button>
     </form>
+    <h2>Results:</h2>
+    <div id="result"></div>
 
-    {% if result %}
-        <div class="result">
-            {% if result is string %}
-                <p>{{ result }}</p>
-            {% else %}
-                {% for line in result %}
-                    <p>{{ line }}</p>
-                {% endfor %}
-            {% endif %}
-        </div>
-    {% endif %}
+    <script>
+        document.getElementById("wasteForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            let hoursWasted = parseFloat(document.getElementById("hours_wasted").value);
+            let resultDiv = document.getElementById("result");
+            let result = "";
+            
+            if (isNaN(hoursWasted)) {
+                result = "Please enter a valid number.";
+            } else if (hoursWasted < 0) {
+                result = "You can't waste negative hours";
+            } else {
+                let minutesWasted = hoursWasted * 60;
+                let books = hoursWasted / 4.8;
+                let movies = hoursWasted / 2;
+                let walk = minutesWasted / 12.25;
+                let skills = hoursWasted / 20;
+                let ride = minutesWasted / 5;
+                let languages = hoursWasted / 400;
+                let animes = minutesWasted / 20;
+                
+                result = `<p>In the ${Math.floor(hoursWasted)} wasted hours you could have:</p>`;
+                result += `<ul><li>ridden ${ride.toFixed(1)} km</li>`;
+                
+                if (minutesWasted >= 12.25) {
+                    result += `<li>walked ${walk.toFixed(1)} km</li>`;
+                    if (minutesWasted >= 20) {
+                        result += `<li>watched ${Math.floor(animes)} episodes of anime</li>`;
+                        if (hoursWasted >= 2) {
+                            result += `<li>read ${Math.floor(books)} books</li>`;
+                            if (hoursWasted >= 4.8) {
+                                result += `<li>watched ${Math.floor(movies)} movies</li>`;
+                                if (hoursWasted >= 20) {
+                                    result += `<li>learned ${Math.floor(skills)} new skills</li>`;
+                                    if (hoursWasted >= 400) {
+                                        result += `<li>learned ${Math.floor(languages)} new languages</li>`;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                result += `</ul>`;
+            }
+            resultDiv.innerHTML = result;
+        });
+    </script>
 </body>
 </html>
-
